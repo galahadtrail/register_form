@@ -9,9 +9,10 @@ DB_FILENAME = "guests_database.db"
 def creating_table():
     basic_query = """
     CREATE TABLE Guests
-    ( Id INT, Login STRING, Passwd STRING)
+    ( Id integer, Login text, Passwd text)
     """
     if not os.path.exists(DB_FILENAME):
         pth = Path(DB_FILENAME)
         pth.touch(exist_ok=True)
-    connection = sqlite3.connect(DB_FILENAME)
+        with sqlite3.connect(DB_FILENAME) as connection:
+            connection.executescript(basic_query)
