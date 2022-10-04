@@ -18,6 +18,15 @@ def creating_table():
             connection.executescript(basic_query)
 
 
+def show_all_data():
+    query = "SELECT * FROM Guests"
+    with sqlite3.connect(DB_FILENAME) as connection:
+        cursor = connection.cursor()
+        cursor.execute(query)
+    for data in cursor.fetchall():
+        print(data)
+
+
 def writing_data(u_id: int, name: str, passwd: str):
     search_query = "SELECT * FROM Guests WHERE Id=" + str(u_id)
     query = "INSERT INTO Guests VALUES (?,?,?)"
@@ -32,7 +41,7 @@ def writing_data(u_id: int, name: str, passwd: str):
 
 def add_new_user(name: str, passwd: str):
 
-    search_query = "SELECT MAX(Id) FROM AS max_id Guests"
+    search_query = "SELECT MAX(Id) AS max_id FROM Guests"
     data = False
     with sqlite3.connect(DB_FILENAME) as connection:
         cursor = connection.cursor()
@@ -40,8 +49,9 @@ def add_new_user(name: str, passwd: str):
         data = cursor.fetchone()
         cursor.close()
 
-    if data:
-        u_id = data + 1
+    if data != (None,):
+        print(data)
+        u_id = data.Id + 1
     else:
         u_id = 1
     writing_data(u_id, name, passwd)
