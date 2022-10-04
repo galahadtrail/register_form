@@ -1,4 +1,5 @@
 """This main module get it all together"""
+import sql_work
 
 if __name__ == '__main__':
-    print("Hello world1")
+    sql_work.creating_table()
