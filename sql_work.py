@@ -27,4 +27,11 @@ def add_new_user(name: str, passwd: str):
         cursor.execute(search_query)
         data = cursor.fetchone()
         cursor.close()
-    
+
+    if data:
+        u_id = data + 1
+        with sqlite3.connect(DB_FILENAME) as connection:
+            cursor = connection.cursor()
+            data_cort = (u_id, name, passwd)
+            cursor.execute(query, data_cort)
+            cursor.close()
