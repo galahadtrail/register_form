@@ -46,12 +46,13 @@ def add_new_user(name: str, passwd: str):
     with sqlite3.connect(DB_FILENAME) as connection:
         cursor = connection.cursor()
         cursor.execute(search_query)
+        print(cursor.fetchall())
         data = cursor.fetchone()
         cursor.close()
 
     if data != (None,):
         print(data)
-        u_id = data.Id + 1
+        u_id = data[0] + 1
     else:
         u_id = 1
     writing_data(u_id, name, passwd)
