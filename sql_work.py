@@ -8,7 +8,7 @@ DB_FILENAME = "guests_database.db"
 
 def creating_table():
     basic_query = """
-    CREATE TABLE IF NOT EXIST SGuests
+    CREATE TABLE IF NOT EXISTS Guests
     ( Id integer, Login text, Passwd text)
     """
     if not os.path.exists(DB_FILENAME):
@@ -19,17 +19,20 @@ def creating_table():
 
 
 def writing_data(u_id: int, name: str, passwd: str):
+    search_query = "SELECT * FROM Guests WHERE Id=" + str(u_id)
     query = "INSERT INTO Guests VALUES (?,?,?)"
     with sqlite3.connect(DB_FILENAME) as connection:
         cursor = connection.cursor()
-        data_cort = (u_id, name, passwd)
-        cursor.execute(query, data_cort)
+        cursor.execute(search_query)
+        if not cursor.fetchone():
+            data_cort = (u_id, name, passwd)
+            cursor.execute(query, data_cort)
         cursor.close()
 
 
 def add_new_user(name: str, passwd: str):
 
-    search_query = "SELECT MAX(Id) FROM AS max_id guests_database.db"
+    search_query = "SELECT MAX(Id) FROM AS max_id Guests"
     data = False
     with sqlite3.connect(DB_FILENAME) as connection:
         cursor = connection.cursor()
@@ -42,4 +45,3 @@ def add_new_user(name: str, passwd: str):
     else:
         u_id = 1
     writing_data(u_id, name, passwd)
-    
