@@ -3,4 +3,5 @@ import sql_work
 
 if __name__ == '__main__':
     sql_work.creating_table()
-
+    sql_work.show_all_data()
+    sql_work.add_new_user("Barry", "1234")
