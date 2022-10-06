@@ -28,12 +28,16 @@ def show_all_data():
 
 
 def writing_data(u_id: int, name: str, passwd: str):
-    search_query = "SELECT * FROM Guests WHERE Id=" + str(u_id - 1)
+    search_query = "SELECT * FROM Guests WHERE Login='" + name + "'"
     query = "INSERT INTO Guests VALUES (?,?,?)"
     with sqlite3.connect(DB_FILENAME) as connection:
         cursor = connection.cursor()
         cursor.execute(search_query)
-        if (u_id - 1, name, str) != cursor.fetchone():
+        data = cursor.fetchone()
+        c = False
+        if data is not None:
+            a, b, c = data
+        if passwd != c:
             data_cort = (u_id, name, passwd)
             cursor.execute(query, data_cort)
         cursor.close()
